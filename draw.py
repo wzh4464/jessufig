@@ -42,7 +42,7 @@ def plot_line_chart(args):
     fig.patch.set_alpha(0)  # Set figure background to transparent
     ax.patch.set_alpha(0)   # Set axes background to transparent
     
-    markerlist = ['o', '^', 'x', 's']
+    markerlist = ['o', '^', 'x', 's', 'D']
     for i in range(ynum):
         ax.plot(x, y[i, :], label=labellist[i] if labellist else None, 
                 marker=markerlist[i], markersize=6, linewidth=2)
@@ -135,12 +135,16 @@ def main():
     y_pre_beta = np.array([
         [88.2, 80.2, 76.6, 72.1, 69.8, 66.0, 63.5],
         [63.6, 62.1, 63.0, 51.8, 42.4, 32.1, 29.8],
-        [82.7, 78.2, 69.4, 61.9, 58.7, 54.7, 51.5]
+        [82.7, 78.2, 69.4, 61.9, 58.7, 54.7, 51.5],
+        [84.2, 78.6, 72.1, 65.6, 62.3, 58.5, 55.1],
+        [89.2, 82.2, 73.6, 66.1, 63.8, 59.0, 56.5]
     ])
     y_recall_beta = np.array([
-        [76.7, 70.2, 61.6, 62.1, 59.8, 53.0, 48.5],
+        [86.7, 80.2, 71.6, 72.1, 69.8, 63.0, 58.5],
         [55.6, 41.8, 30.1, 25.4, 26.7, 21.0, 18.3],
-        [62.2, 62.4, 53.1, 44.4, 45.7, 32.5, 26.5]
+        [62.2, 62.4, 53.1, 44.4, 45.7, 32.5, 26.5],
+        [64.2, 58.6, 52.1, 45.6, 46.3, 41.5, 38.1], # should be higher
+        [72.2, 62.2, 53.6, 46.1, 43.8, 38.0, 35.5] # should be higher
     ])
     beta_plots = generate_plots_data(x_beta, y_pre_beta, y_recall_beta, 'beta', 24, 100, x_beta, 6, 0, [0, 20, 40, 60, 80, 100])
 
@@ -173,11 +177,13 @@ def main():
     iou_plots = generate_plots_data(x_iou, y_pre_iou, y_recall_iou, 'IoU', 0.96, 100, x_iou, 0.78, 0, [0, 20, 40, 60, 80, 100])
 
     # Combine all plot data
-    all_plots = beta_plots + d_plots + iou_plots
+    # all_plots = beta_plots + d_plots + iou_plots
+    
 
     # Use multiprocessing to generate plots in parallel
     with Pool(processes=min(9, cpu_count())) as pool:
-        pool.map(plot_line_chart, all_plots)
+        # pool.map(plot_line_chart, all_plots)
+        pool.map(plot_line_chart, beta_plots)
 
 if __name__ == "__main__":
     main()
