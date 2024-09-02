@@ -3,6 +3,34 @@ import matplotlib.pyplot as plt
 from multiprocessing import Pool, cpu_count
 
 def plot_line_chart(args):
+    """
+    Generates and saves a line chart based on the provided data and configuration parameters. 
+    This function allows for customization of the chart's appearance and layout.
+
+    Args:
+        args (tuple): A tuple containing the following elements:
+            - data (ndarray): A 2D array where the first row contains x-values and subsequent rows contain y-values.
+            - pic_name (str): The name of the output picture file (without extension).
+            - xlabel (str): The label for the x-axis.
+            - ylabel (str): The label for the y-axis.
+            - xlim (float): The upper limit for the x-axis.
+            - ylim (float): The upper limit for the y-axis.
+            - labellist (list): A list of labels for each line in the chart.
+            - xticks (list): A list of ticks for the x-axis.
+            - xlimD (float): The lower limit for the x-axis.
+            - ylimD (float): The lower limit for the y-axis.
+            - yticks (list): A list of ticks for the y-axis.
+            - legend (bool): A flag indicating whether to display the legend.
+
+    Returns:
+        None: This function saves the plot to a file and does not return any value.
+
+    Examples:
+        plot_line_chart((data_array, 'my_chart', 'X Axis', 'Y Axis', 10, 100, 
+                         ['Line 1', 'Line 2'], [0, 2, 4, 6, 8, 10], 
+                         0, 10, [0, 20, 40, 60, 80, 100], True))
+    """
+
     data, pic_name, xlabel, ylabel, xlim, ylim, labellist, xticks, xlimD, ylimD, yticks, legend = args
     
     x = data[0, :]
@@ -44,6 +72,30 @@ def fMeasureArray(y_pre, y_recall):
     return 2 * y_pre * y_recall / (y_pre + y_recall)
 
 def generate_plots_data(x, y_pre, y_recall, param_name, xlim, ylim, xticks, xlimD, ylimD, yticks):
+    """
+    Generates data for precision, recall, and F1 measure plots based on the provided input values. 
+    This function structures the data and parameters needed for plotting these metrics.
+
+    Args:
+        x (ndarray): The x-values for the plots.
+        y_pre (ndarray): The y-values representing precision.
+        y_recall (ndarray): The y-values representing recall.
+        param_name (str): The name of the parameter being plotted.
+        xlim (float): The upper limit for the x-axis.
+        ylim (float): The upper limit for the y-axis.
+        xticks (list): A list of ticks for the x-axis.
+        xlimD (float): The lower limit for the x-axis.
+        ylimD (float): The lower limit for the y-axis.
+        yticks (list): A list of ticks for the y-axis.
+
+    Returns:
+        list: A list of tuples, each containing data and parameters for precision, recall, and F1 measure plots.
+
+    Examples:
+        plots_data = generate_plots_data(x_values, precision_values, recall_values, 'beta', 10, 100, 
+                                          [0, 2, 4, 6, 8, 10], 0, 10, [0, 20, 40, 60, 80, 100])
+    """
+
     data_pre = np.vstack((x, y_pre))
     data_recall = np.vstack((x, y_recall))
     y_fMeasure = fMeasureArray(y_pre, y_recall)
