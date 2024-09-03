@@ -75,8 +75,8 @@ def plot_line_chart(args):
         )
 
     ax.grid(axis="both", linestyle="--", zorder=0)
-    ax.set_xlabel(xlabel)
-    ax.set_ylabel(ylabel)
+    ax.set_xlabel(xlabel, fontsize=22)
+    ax.set_ylabel(ylabel, fontsize=22)
 
     # Adjust x-axis limits to prevent edge point clipping
     x_range = xlim - xlimD
@@ -86,11 +86,11 @@ def plot_line_chart(args):
     ax.set_ylim(ylimD, ylim)
     ax.set_yticks(yticks)
 
-    ax.tick_params(axis="both", labelsize=18)
+    ax.tick_params(axis="both", labelsize=20)
 
     if legend:
-        plt.rc("legend", fontsize=12)
-        ax.legend(bbox_to_anchor=(1.0, 1.2), ncol=4, fancybox=True, shadow=True)
+        plt.rc("legend", fontsize=16)
+        ax.legend(bbox_to_anchor=(1.0, 1.4), ncol=3, fancybox=True, shadow=True)
 
     plt.savefig(f"pic/{pic_name}.png", dpi=600, bbox_inches="tight", transparent=True)
     plt.close(fig)
@@ -175,7 +175,7 @@ def generate_plots_data(
             data_fMeasure,
             f"F1_{param_name}{name_suffix}",
             xlabel,
-            r"F Measure (\%)",
+            r"F-measure (\%)",
             xlim,
             ylim,
             common_params["labellist"],

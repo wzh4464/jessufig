@@ -23,9 +23,6 @@ conda install -p "$SCRIPT_DIR/.venv" -y \
     pandas \
     jupyter
 
-# 安装 curses（通常已包含在 Python 标准库中）
-conda install -p "$SCRIPT_DIR/.venv" -y ncurses
-
 echo "环境设置完成。使用以下命令激活环境："
 echo "conda activate $SCRIPT_DIR/.venv"
 echo ""
