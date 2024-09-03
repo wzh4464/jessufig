@@ -1,9 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from concurrent.futures import ThreadPoolExecutor
+from PIL import Image
+import numpy as np
 from multiprocessing import Pool, cpu_count
 
 import matplotlib
-matplotlib.use('Agg')  # 使用非交互式后端
+
+matplotlib.use("Agg")  # 使用非交互式后端
+
 
 def plot_line_chart(args):
     """
@@ -183,9 +188,13 @@ def generate_plots_data(
     ]
 
 
+def load_image(filename):
+    return np.array(Image.open(f"pic/{filename}.png"))
+
+
 def combine_plots(plot_files):
     """
-    Combines multiple plot files into a single 3x3 grid image.
+    Combines multiple plot files into a single 3x3 grid image using optimized methods.
 
     Args:
         plot_files (list): A list of filenames for the plot images to combine.
@@ -197,8 +206,11 @@ def combine_plots(plot_files):
     fig, axs = plt.subplots(3, 3, figsize=(18, 18))
     fig.patch.set_facecolor("white")  # Set white background for the entire figure
 
-    for i, filename in enumerate(plot_files):
-        img = plt.imread(f"pic/{filename}.png")
+    # Use ThreadPoolExecutor to load images in parallel
+    with ThreadPoolExecutor(max_workers=9) as executor:
+        images = list(executor.map(load_image, plot_files))
+
+    for i, img in enumerate(images):
         row = i // 3
         col = i % 3
         axs[row, col].imshow(img)
