@@ -6,8 +6,11 @@ import numpy as np
 from multiprocessing import Pool, cpu_count
 
 import matplotlib
+from matplotlib import font_manager
 
 matplotlib.use("Agg")  # 使用非交互式后端
+font_path = "/backup/codes/actions-runner/_work/PhDThesis/PhDThesis/Times New Roman.ttf"
+font_prop = font_manager.FontProperties(fname=font_path)
 
 
 def plot_line_chart(args):
@@ -75,8 +78,9 @@ def plot_line_chart(args):
         )
 
     ax.grid(axis="both", linestyle="--", zorder=0)
-    ax.set_xlabel(xlabel, fontsize=22)
-    ax.set_ylabel(ylabel, fontsize=22)
+    label_size = 32
+    ax.set_xlabel(xlabel, fontsize=label_size)
+    ax.set_ylabel(ylabel, fontproperties=font_prop, fontsize=label_size)
 
     # Adjust x-axis limits to prevent edge point clipping
     x_range = xlim - xlimD
@@ -89,10 +93,10 @@ def plot_line_chart(args):
     ax.tick_params(axis="both", labelsize=20)
 
     if legend:
-        plt.rc("legend", fontsize=16)
+        plt.rc("legend", fontsize=20)
         ax.legend(bbox_to_anchor=(1.0, 1.4), ncol=3, fancybox=True, shadow=True)
 
-    plt.savefig(f"pic/{pic_name}.png", dpi=600, bbox_inches="tight", transparent=True)
+    plt.savefig(f"pic/{pic_name}.png", dpi=300, bbox_inches="tight", transparent=True)
     plt.close(fig)
 
 
@@ -222,12 +226,17 @@ def combine_plots(plot_files):
 
 
 def main():
+    # 更新全局字体设置
     plt.rcParams.update(
         {
-            "text.usetex": True,
-            "font.family": "Times New Roman",
+            "text.usetex": True,  # 启用 LaTeX 渲染
+            "text.latex.preamble": r"\usepackage{times}",  # 使用 Times New Roman
+            "font.family": "serif",
+            "font.serif": ["Times New Roman"],
+            "font.sans-serif": ["Times New Roman"],
+            "font.monospace": ["Times New Roman"],
+            "mathtext.fontset": "cm",  # 数学字体使用 Computer Modern
             "font.size": 18,
-            "mathtext.fontset": "stix",
         }
     )
 
